@@ -1,9 +1,3 @@
-% clc
-% clear
-% close all;
-
-
-%% Load data
 is_main_reader_executed = exist("main_file_reader_flag","var");
 if ~is_main_reader_executed
     clc
@@ -12,6 +6,7 @@ if ~is_main_reader_executed
     fname = 'MM_S1_raw.mat'; % Monkey M (MM), session 1; PMd and M1
 
 end
+%% Load data
 
 fpath = './../data/data_and_scripts/source_data/raw/';
 ipath = './../images/';
