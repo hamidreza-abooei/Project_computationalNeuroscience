@@ -617,6 +617,34 @@ if isnan(select_neuron)
         saveas(gcf,strcat(ipath,img_header_name,"fit_gauss_M1_tunning_curve.png"))
     end
 
+    
+    % NEW
+    figure();
+    x = ([Data.avgspeed{:}]);
+    y = mean([Data.average_firing_rate_PMd{:}]);
+    f = fit(x.',y.','gauss1');
+    plot(f,x,y)
+    xlabel("reaching Direction");
+    ylabel("average firing rate")
+    title("tuning curve, firing rate PMd vs reach direction")
+    saveas(gcf,strcat(ipath,img_header_name,"fit_gauss_PMd_tunning_curve.png"))
+
+    if M1_present
+        figure();
+        x = [Data.reach_dir{:}];
+        y = mean([Data.average_firing_rate_M1{:}]);
+        f = fit(x.',y.','gauss1');
+        plot(f,x,y)
+
+        xlabel("reaching Direction");
+        ylabel("average firing rate");
+        title("tuning curve, firing rate m1 vs reach direction");
+%         saveas(gcf,strcat(ipath,img_header_name,"fit_gauss_M1_tunning_curve.png"))
+    end
+
+
+
+
     figure();
     if M1_present
         subplot(2,2,1);
