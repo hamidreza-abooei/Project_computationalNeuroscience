@@ -14,11 +14,22 @@ if ~is_main_reader_executed
 end
 
 fpath = './../data/data_and_scripts/source_data/raw/';
-
+ipath = './../images/';
 % fname = 'MM_S1_raw.mat'; % Monkey M (MM), session 1; PMd and M1
 % fname = 'MT_S1_raw.mat'; % Monkey T (MT), session 1; PMd only
 % fname = 'MT_S2_raw.mat'; % Monkey T (MT), session 2; PMd only
 % fname = 'MT_S3_raw.mat'; % Monkey T (MT), session 3; PMd only
+
+if (strcmp(fname,'MM_S1_raw.mat'))
+    img_header_name = "MM_S1_";
+elseif (strcmp(fname,'MT_S1_raw.mat'))
+    img_header_name = "MT_S1_";
+elseif (strcmp(fname,'MT_S2_raw.mat'))
+    img_header_name = "MT_S2_";
+else
+    img_header_name = "MT_S3_";
+end
+
 
 load([fpath fname])
 
@@ -362,7 +373,7 @@ hold on;
 
 scatter(x_reach_pos_end,y_reach_pos_end);           
 legend("animal pos","reach pos")
-
+saveas(gcf,strcat(ipath,img_header_name,"all_routes_pos.png"))
 
 %% Show Some data
 figure();
@@ -406,6 +417,7 @@ plot(Data.kinematics{1, 1}(:,3),Data.kinematics{1, 1}(:,4));
 title("Kinematic Velocity")
 xlabel("x");
 ylabel("y");
+saveas(gcf,strcat(ipath,img_header_name,"overview_1.png"))
 
 trial_num_display = 161;
 figure();
@@ -478,6 +490,8 @@ else
     ylabel("y");
 
 end
+saveas(gcf,strcat(ipath,img_header_name,"overview_",int2str(trial_num_display),".png"))
+
 % %% Try fitting firing rate with 
 % trial_num_Processing = 182;
 % fr_m1 = movmean(sum(Data.neural_data_PMd{trial_num_Processing, 1}),5);
@@ -496,6 +510,7 @@ end
 figure();
 polarscatter([Data.reach_dir{:}],[Data.reach_len{:}]);
 title("Direction and length")
+saveas(gcf,strcat(ipath,img_header_name,"polar_dir_len.png"))
 
 %% calculate all firings in each trials and show tuning curve
 
@@ -585,7 +600,8 @@ if isnan(select_neuron)
     xlabel("reaching Direction");
     ylabel("average firing rate")
     title("tuning curve, firing rate PMd vs reach direction")
-    
+    saveas(gcf,strcat(ipath,img_header_name,"fit_gauss_PMd_tunning_curve.png"))
+
     if M1_present
         figure();
         x = [Data.reach_dir{:}];
@@ -600,8 +616,10 @@ if isnan(select_neuron)
             plot(x(selected_data_to_plot6),y(selected_data_to_plot6),'o');
         end
         xlabel("reaching Direction");
-        ylabel("average firing rate")
-        title("tuning curve, firing rate m1 vs reach direction")
+        ylabel("average firing rate");
+        title("tuning curve, firing rate m1 vs reach direction");
+        saveas(gcf,strcat(ipath,img_header_name,"fit_gauss_M1_tunning_curve.png"))
+
     end
 
     figure();
@@ -630,6 +648,8 @@ if isnan(select_neuron)
         ylabel("channel");
         title("neural Data PMd");
 
+        saveas(gcf,strcat(ipath,img_header_name,"firing_rate.png"))
+
         figure();
         subplot(2,2,1);
         imshow(Data.neural_data_M1{selected_data_to_plot5, 1});
@@ -654,6 +674,7 @@ if isnan(select_neuron)
         xlabel("time");
         ylabel("channel");
         title(strcat("maxfr neural Data PMd",sprintf(" |Dir%.2f",Data.reach_dir{selected_data_to_plot5,1})));
+        saveas(gcf,strcat(ipath,img_header_name,"firing_rate_min_max.png"))
 
     else
         subplot(2,1,1);
@@ -667,6 +688,8 @@ if isnan(select_neuron)
         xlabel("time");
         ylabel("channel");
         title(strcat("neural Data PMd",sprintf(" |Dir%.2f",Data.reach_dir{selected_data_to_plot2,1})));
+        saveas(gcf,strcat(ipath,img_header_name,"firing_rate.png"))
+
     end
 
 %     figure();
@@ -720,7 +743,8 @@ else
     xlabel("reaching Direction");
     ylabel("average firing rate")
     title("tuning curve, firing rate PMd vs reach direction")
-    
+    saveas(gcf,strcat(ipath,img_header_name,"fit_gauss_PMd_tunning_curve_single_neuron.png"))
+
     if M1_present
         figure();
         x = [Data.reach_dir{:}];
@@ -730,6 +754,7 @@ else
         xlabel("reaching Direction");
         ylabel("average firing rate")
         title("tuning curve, firing rate m1 vs reach direction")
+        saveas(gcf,strcat(ipath,img_header_name,"fit_gauss_M1_tunning_curve_single_neuron.png"))
     end
     
     figure();
@@ -740,7 +765,8 @@ else
     xlabel("reaching length");
     ylabel("average firing rate")
     title("tuning curve, firing rate PMd vs reach length")
-    
+    saveas(gcf,strcat(ipath,img_header_name,"fit_gauss_PMd_poly_len_tunning_curve_single_neuron.png"))
+
     if M1_present
         figure();
         x = [Data.reach_len{:}];
@@ -750,6 +776,8 @@ else
         xlabel("reaching length");
         ylabel("average firing rate")
         title("tuning curve, firing rate M1 vs reach length")
+        saveas(gcf,strcat(ipath,img_header_name,"fit_gauss_M1_poly_len_tunning_curve_single_neuron.png"))
+
     end
 
 end
